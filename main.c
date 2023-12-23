@@ -1,30 +1,29 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <SDL.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include "menu.h"
+#include "characters.h"
 
-int main(int argc, char *argv[]) {
-    // Start SDL
-    if(SDL_Init(SDL_INIT_VIDEO)){
-        printf("SDL_Init doesn't work.\n");
-        exit(1);
+#define taille_x 11
+#define taille_y 22
+
+int** get_game_board(){
+    int** board;
+    board = (int**)malloc(sizeof(int*)* taille_x);
+    for(int i =0; i<taille_x; i++){
+        board[i] = (int*)malloc(sizeof(int)* taille_y);
     }
-    // Start Game logic
-    SDL_Surface *window=NULL;
-    window = SDL_SetVideoMode(800, 800, 32, SDL_HWSURFACE);
-    if(window == NULL){
-        printf("window doesn't work.\n");
-        exit(1);
-    }
-    while(1){
-        SDL_Event event;
-        SDL_WaitEvent(&event);
-        if(event.type == SDL_QUIT){
-            break;
+}
+
+void fill_board_borders(int **game_board){
+    for(int i=0; i<taille_x; i++){
+        for(int j=0; j<taille_y; j++){
+            if((i==0 || j==0) ||(i==taille_x || j==taille_y)) game_board[i][j] = -1;
         }
     }
-    SDL_FreeSurface(window);
-    // End Game logic
-    // Quit SDL
-    SDL_Quit();
+}
+
+int main(){
+    int** game_board = get_game_board();
+    fill_board_borders(game_board);
     return 0;
 }
